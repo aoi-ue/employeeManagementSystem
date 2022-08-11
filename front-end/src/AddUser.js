@@ -10,23 +10,26 @@ const AddUser = ({ form }) => {
   const [rank, setRank] = useState("null");
   const [users, setUsers] = useState([]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const data = await fetch("http://localhost:4000/get");
-  //     const json = await data.json();
-  //     console.log(json)
-  //   })();
-  // });
-
   useEffect(() => {
-    let isCancelled = false;
-    fetch("http://localhost:4000/get")
-      .then(response => response.json())
-      .then(response => {
-        if (!isCancelled) setUsers(response);
-      });
-    return () => (isCancelled = true);
+    let isCancelled = false; 
+    const dataFetch = async () => {
+      const data = await fetch("http://localhost:4000/get");
+      const json = await data.json();
+      if (!isCancelled) setUsers(json); 
+    };
+    dataFetch().catch(console.error); 
+    return () => (isCancelled = true); 
   }, []);
+
+  // useEffect(() => {
+  //   let isCancelled = false;
+  //   fetch("http://localhost:4000/get")
+  //     .then(response => response.json())
+  //     .then(response => {
+  //       if (!isCancelled) setUsers(response);
+  //     });
+  //   return () => (isCancelled = true);
+  // }, []);
 
   const {
     getFieldDecorator,
